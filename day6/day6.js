@@ -9,11 +9,11 @@ const sum = (prev, cur) => prev + cur;
  */
 const getMarker = (data, MAX = 4) => {
   let visited = {};
-  let counter = 0;
   let marker = 0;
-  let charCounter = 0;
+  let total = 0;
   for (const idx in data) {
     const chr = data[idx];
+    total++;
 
     if (visited[chr]) {
       visited[chr] += 1;
@@ -21,12 +21,10 @@ const getMarker = (data, MAX = 4) => {
       visited[chr] = 1;
     }
 
-    const visitedValues = Object.values(visited);
-    const total = visitedValues.reduce(sum, 0);
-    const isRepeated = visitedValues.some((ele) => ele > 1);
-    if (total === MAX && isRepeated) {
+    if (total === MAX && Object.values(visited).some((ele) => ele > 1)) {
       // Reduce 0th element count in a grop of 4
       visited[data[idx - (MAX - 1)]] -= 1;
+      total--;
     } else if (total === MAX) {
       // console.log("Visited : ", visited, data[idx]);
       marker = Number(idx) + 1;
